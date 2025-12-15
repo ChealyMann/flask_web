@@ -1,0 +1,173 @@
+{% extends 'backend/admin/master.html' %}
+
+{% block main %}
+    <div class="w-auto mx-5">
+        <div class="row mb-3">
+            <div class="col">
+                <h2 class="fw-bold text-dark">
+                    <i class="fa-solid fa-layer-group me-2"></i>Category Management
+                </h2>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="p-3 shadow-sm border border-2 rounded bg-white">
+                    <a href="{{ url_for('admin.admin_category_add') }}" class="text-decoration-none">
+                        <button class="btn btn-success">
+                            <i class="fa-solid fa-circle-plus me-2"></i>
+                            <span>Add New Category</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow border-0">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered border-3 mb-0">
+                                <thead>
+                                <tr class="bg-primary text-white">
+                                    <th class="text-center py-3" style="width: 80px;">
+                                        <i class="fa-solid fa-hashtag me-1"></i>ID
+                                    </th>
+                                    <th class="py-3" style="width: 190px;">
+                                        <i class="fa-solid fa-tag me-1"></i>Name
+                                    </th>
+                                    <th class="py-3">
+                                        <i class="fa-solid fa-align-left me-1"></i>Description
+                                    </th>
+                                    <th class="text-center py-3" style="width: 120px;">
+                                        <i class="fa-solid fa-circle-info me-1"></i>Status
+                                    </th>
+                                    <th class="text-center py-3" style="width: 200px;">
+                                        <i class="fa-solid fa-gears me-1"></i>Action
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for category in categories %}
+                                    <tr class="align-middle">
+                                        <td class="text-center fw-bold text-primary">
+                                            {{ loop.index }}</td>
+                                        <td class="fw-semibold">
+                                            {{ category['name'] }}
+                                        </td>
+                                        <td class="text-muted small">
+                                            {{ category['desc'] }}
+                                        </td>
+                                        <td class="text-center">
+                                            {% if category['status'] == 'false' %}
+                                                <span class="badge bg-danger-subtle text-danger border border-danger rounded-pill px-3 py-2">
+                                                        <i class="fa-solid fa-circle-xmark me-1"></i>Inactive
+                                                    </span>
+                                            {% else %}
+                                                <span class="badge bg-success-subtle text-success border border-success rounded-pill px-3 py-2">
+                                                        <i class="fa-solid fa-circle-check me-1"></i>Active
+                                                    </span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group" role="group">
+                                                <a href="{{ url_for('admin.admin_category_edit',category_id = category.id) }}">
+                                                    <button class="btn btn-outline-primary btn-sm"
+                                                            title="Edit Category">
+                                                        <i class="fa-solid fa-pen-to-square me-1"></i>
+                                                        <span>Edit</span>
+                                                    </button>
+                                                </a>
+                                                <form action="{{ url_for('admin.admin_category_delete',category_id = category.id) }}"
+                                                      method="post">
+                                                    <button class="btn btn-outline-danger btn-sm btn-delete"
+                                                            title="Delete Category">
+
+                                                        <i class="fa-solid fa-trash-can me-1"></i>
+                                                        <span>Delete</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light border-top-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted small">
+                                <i class="fa-solid fa-list me-1"></i>Showing 11 categories
+                            </span>
+                            <nav aria-label="Category pagination">
+                                <ul class="pagination pagination-sm mb-0">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-group .btn {
+            transition: all 0.2s ease;
+        }
+
+        .btn-group .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+    </style>
+    <script>
+        // ១. ចាប់យក Button ទាំងអស់
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
