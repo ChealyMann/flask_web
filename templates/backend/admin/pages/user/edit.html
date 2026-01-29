@@ -1,0 +1,138 @@
+{% extends 'backend/admin/master.html' %}
+
+{% block main %}
+    <div class="w-auto mx-5">
+        <div class="row mb-3">
+            <div class="col">
+                <h2 class="fw-bold text-dark">
+                    <i class="fa-solid fa-layer-group me-2"></i>Edit User
+                </h2>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="p-3 shadow-sm border border-2  bg-white">
+                    <a href="{{ url_for('admin.admin_user') }}" class="text-decoration-none">
+                        <button class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-circle-plus me-2"></i>
+                            <span>Back</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <form action="{{ url_for('admin.admin_user_edit',user_id = user.id) }}" method="post">
+            <div class="card p-3 ">
+                <div class="row">
+                    <div class="col-lg-6 ">
+
+                        <div class="form-floating mb-4">
+                            {{ form.hidden_tag() }}
+                            {{ form.username(class="form-control border-2 border-dark-subtle  bg-primary-subtle",id="floatingInput" , value= username) }}
+                            {#                        <input type="text" class="form-control border-2 border-dark-subtle  bg-primary-subtle"#}
+                            {#                               id="floatingInput"#}
+                            {#                               name="category"#}
+                            {#                               placeholder="name@example.com">#}
+                            <label for="floatingInputDisabled">Username</label>
+
+
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            {{ form.hidden_tag() }}
+                            {{ form.password(class="form-control border-2 border-dark-subtle  bg-primary-subtle",id="floatingInput" ) }}
+                            <label for="floatingInputDisabled">Leave Blank To Keep The Current Password !</label>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12 d-flex">
+                    <div class="col-lg-12">
+                        <div class="p-3 shadow-sm border border-2 rounded bg-white">
+
+
+                            {{ form.submit(class="btn btn-outline-success") }}
+
+                            <button class="btn btn-outline-warning border-dark border-2" id="btnClear" type="button">
+                                <i class="fa-solid fa-recycle text-black"></i>
+                                <span class="text-black">Clear</span>
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+
+    <style>
+
+
+        .form-control:focus, .form-select:focus {
+            box-shadow: none;
+            background-color: #fff !important; /* Turn white on focus */
+            border: 1px solid #dee2e6 !important;
+        }
+
+
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-group .btn {
+            transition: all 0.2s ease;
+        }
+
+        .btn-group .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+    </style>
+
+    <script>
+
+        function clearFormFields() {
+            // Get the elements by their IDs
+            const usernameInput = document.getElementById('floatingInput'); // User Name
+            const statusSelect = document.getElementById('floatingSelect'); // Status dropdown
+            const descriptionTextarea = document.getElementById('floatingTextarea'); // Description
+
+            // Clear the value of the text input and textarea
+            if (usernameInput) {
+                usernameInput.value = '';
+            }
+
+            if (descriptionTextarea) {
+                descriptionTextarea.value = '';
+            }
+
+            // Reset the select dropdown to the default option (value="1" - Active)
+            if (statusSelect) {
+                statusSelect.value = '1';
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const clearButton = document.getElementById('btnClear');
+            if (clearButton) {
+                clearButton.addEventListener('click', clearFormFields);
+            }
+        });
+    </script>
+{% endblock %}

@@ -3,8 +3,12 @@
 
 
 {% block main %}
+
+
     <div class="page-breadcrumb">
         <div class="row">
+
+
             <div class="col-7 align-self-center">
                 <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning Jason!</h3>
                 <div class="d-flex align-items-center">
@@ -482,6 +486,25 @@
             </div>
         </div>
     </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <script>
+                {% for category, message in messages %}
+                    Swal.fire({
+                        title: '{{ "Login Successfully" if category == "success" else "បរាជ័យ" }}',
+                        text: '{{ message }}',
+                        icon: '{{ category }}',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                        confirmButtonColor: "#000000"
+                    });
+                {% endfor %}
+            </script>
+        {% endif %}
+    {% endwith %}
+
     <footer class="footer text-center text-muted">
         All Rights Reserved by Freedash. Designed and Developed by <a
             href="https://adminmart.com/">Angkorkey</a>.

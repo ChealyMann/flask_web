@@ -1,0 +1,27 @@
+<div id="mobile-menu" class="fixed inset-0 z-50 hidden">
+    <!-- Dark Overlay -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black/80 opacity-0 transition-opacity duration-300"></div>
+    <!-- Menu Drawer (Slides from Right) -->
+    <div class="fixed right-0 top-0 h-full w-80 bg-[#121214] shadow-2xl transform translate-x-full offcanvas-transition flex flex-col border-l border-white/5">
+        <!-- Menu Header -->
+        <div class="flex justify-between items-center p-6 border-b border-white/5">
+            <h2 class="text-xl font-bold text-white">Menu</h2>
+            <button id="close-menu-button" class="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10">
+                &times;
+            </button>
+        </div>
+        <!-- Menu Items -->
+        <div class="p-6 overflow-y-auto flex-1">
+            <ul class="space-y-6">
+                <li><a href="#" class="block text-xl font-bold text-gray-200 hover:text-white">New Arrivals</a></li>
+                <li><a href="#" class="block text-xl font-bold text-gray-200 hover:text-white">Mechanical Keyboards</a>
+                </li>
+                <li><a href="#" class="block text-xl font-bold text-gray-200 hover:text-white">Audio Gear</a></li>
+                <li><a href="#" class="block text-xl font-bold text-gray-200 hover:text-white">Gaming Mice</a></li>
+                <li class="pt-6 border-t border-white/5">
+                    <a href="#" class="block text-lg font-medium text-white/50 hover:text-white">Log In</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

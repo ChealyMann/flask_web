@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed
 from wtforms import SelectField
-from wtforms.fields.simple import StringField, TextAreaField, SubmitField
+from wtforms.fields.simple import StringField, TextAreaField, SubmitField, FileField
 from wtforms.validators import DataRequired, Length
 
 
@@ -11,4 +12,5 @@ class CategoryForm(FlaskForm):
         ('true', 'Active'),
         ('false', 'Inactive'),
     ])
+    image = FileField('image', validators=([FileAllowed(['jpg', 'png', 'jpeg'], 'jpg,png,jpeg')]))
     submit = SubmitField('Submit')

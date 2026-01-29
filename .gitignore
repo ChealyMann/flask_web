@@ -12,3 +12,11 @@ venv/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Ignore the database
+instance/
+*.db
+
+# Ignore secrets (if config.py has sensitive info)
+config.py
+

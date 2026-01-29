@@ -1,0 +1,193 @@
+{% extends("frontend/main.html") %}
+
+{% block content %}
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-16">
+
+        <nav class="hidden sm:flex mb-6 text-sm text-gray-500">
+            <a href="{{ url_for("home.home") }}" class="hover:text-white transition">Home</a>
+            <span class="mx-2">/</span>
+            <a href="#" class="hover:text-white transition">{{ product.category_name.name }}</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-300">{{ product.name }}</span>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
+
+            <div class="flex flex-col gap-4">
+                <div class="aspect-square bg-[#121214] rounded-2xl overflow-hidden relative border border-white/5 shadow-2xl">
+                    <img id="main-image"
+                         src="{{ url_for("static",filename = "images/"+product.image) }}"
+                         alt="Cyberboard Terminal Keyboard"
+                         fetchpriority="high"
+                         class="w-full h-full object-cover object-center transition duration-500">
+
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">In Stock</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2 snap-x">
+                    {% for image in product.images %}
+                        <button onclick="changeImage(this, '{{ url_for("static",filename = "images/"+image.image) }}')"
+                                class="thumb active flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 bg-[#121214] transition snap-start relative">
+                            <img src="{{ url_for("static",filename = "images/"+image.image) }}"
+                                 class="w-full h-full object-cover" alt="View 1">
+                        </button>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+
+                <div class="mb-2">
+                    <span class="text-indigo-400 font-bold tracking-[0.2em] text-[10px] uppercase">{{ product.category_name.name }}</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl font-bold text-white mb-3 tracking-tight leading-tight">
+                    {{ product.name }}
+                </h1>
+
+                <div class="flex items-baseline gap-3 mb-6">
+                    <span class="text-3xl font-semibold text-white tracking-tight">${{ product.price }}</span>
+                    {#                    <span class="text-lg text-gray-500 line-through font-medium">$500.00</span>#}
+                    {#                    <span class="text-xs font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded">-10%</span>#}
+                </div>
+
+                <div class="text-gray-400 text-sm leading-relaxed font-normal mb-8 border-b border-white/10 pb-8">
+                    <p>
+                        {{ product.desc if product.desc.strip() != "" else "No Desc Yet" }}
+                    </p>
+                </div>
+
+                <div class="space-y-8 mb-8">
+
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-400 mb-3">Color: <span id="color-label"
+                                                                                        class="text-white font-bold ml-1">Terminal Black</span>
+                        </h3>
+                        <div class="flex items-center gap-4" id="color-selector">
+                            <button onclick="selectVariant('color', this, 'Terminal Black')"
+                                    class="w-12 h-12 rounded-full bg-[#1c1c1e] border-2 border-white ring-2 ring-black ring-offset-2 ring-offset-black transition active:scale-95"
+                                    aria-label="Terminal Black"></button>
+                            <button onclick="selectVariant('color', this, 'Glacier White')"
+                                    class="w-12 h-12 rounded-full bg-[#e5e5e5] border-2 border-transparent transition active:scale-95"
+                                    aria-label="Glacier White"></button>
+                            <button onclick="selectVariant('color', this, 'Cyber Purple')"
+                                    class="w-12 h-12 rounded-full bg-[#5e5ece] border-2 border-transparent transition active:scale-95"
+                                    aria-label="Cyber Purple"></button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-sm font-medium text-gray-400">Switch Type</h3>
+                            <a href="#" class="text-xs text-indigo-400 hover:text-white underline underline-offset-2">Size
+                                Guide</a>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3" id="switch-selector">
+                            <button onclick="selectVariant('switch', this)"
+                                    class="py-3 px-2 rounded-xl border border-white bg-white text-black font-bold text-sm transition shadow-lg text-center">
+                                Ink Black
+                            </button>
+                            <button onclick="selectVariant('switch', this)"
+                                    class="py-3 px-2 rounded-xl border border-white/10 bg-[#121214] text-gray-400 font-medium text-sm transition text-center active:bg-white/5">
+                                MX Red
+                            </button>
+                            <button onclick="selectVariant('switch', this)"
+                                    class="py-3 px-2 rounded-xl border border-white/10 bg-[#121214] text-gray-400 font-medium text-sm transition text-center active:bg-white/5">
+                                Gold Pink
+                            </button>
+                            <button onclick="selectVariant('switch', this)"
+                                    class="py-3 px-2 rounded-xl border border-white/10 bg-[#121214] text-gray-400 font-medium text-sm transition text-center active:bg-white/5">
+                                Box White
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex gap-4">
+                        <div class="flex items-center justify-between bg-[#121214] rounded-full h-14 px-4 border border-white/10 w-32 shrink-0">
+                            <button onclick="updateQty(-1)"
+                                    class="text-xl text-gray-400 w-8 h-full flex items-center justify-center active:text-white">
+                                −
+                            </button>
+                            <input type="number" id="qty-input" value="1" readonly
+                                   class="bg-transparent text-center text-white font-semibold text-base w-full focus:outline-none appearance-none m-0">
+                            <button onclick="updateQty(1)"
+                                    class="text-xl text-gray-400 w-8 h-full flex items-center justify-center active:text-white">
+                                +
+                            </button>
+                        </div>
+
+                        <button class="w-full bg-white text-black h-14 rounded-full font-bold text-lg flex items-center justify-center gap-2 transition transform active:scale-[0.97] shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+                            <span>Add to Cart</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                        <div class="flex items-center gap-2 text-xs text-gray-400">
+                            <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>In Stock, Ready to Ship</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-gray-400">
+                            <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            <span>Official Warranty</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mt-20 border-t border-white/10 pt-10">
+            <h2 class="text-xl font-bold text-white mb-6">You might also like</h2>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="group cursor-pointer">
+                    <div class="aspect-square bg-[#121214] rounded-xl overflow-hidden mb-3 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&q=60"
+                             loading="lazy"
+                             class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500">
+                    </div>
+                    <h3 class="text-white text-sm font-semibold truncate">Keychron Q1 Pro</h3>
+                    <p class="text-gray-500 text-xs mt-1">$199.00</p>
+                </div>
+                <div class="group cursor-pointer">
+                    <div class="aspect-square bg-[#121214] rounded-xl overflow-hidden mb-3 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1595225476474-87563907a212?w=400&q=60"
+                             loading="lazy"
+                             class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500">
+                    </div>
+                    <h3 class="text-white text-sm font-semibold truncate">Holy Panda</h3>
+                    <p class="text-gray-500 text-xs mt-1">$65.00</p>
+                </div>
+                <div class="group cursor-pointer">
+                    <div class="aspect-square bg-[#121214] rounded-xl overflow-hidden mb-3 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1605773527852-c546a8584ea3?w=400&q=60"
+                             loading="lazy"
+                             class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500">
+                    </div>
+                    <h3 class="text-white text-sm font-semibold truncate">Logitech G Pro</h3>
+                    <p class="text-gray-500 text-xs mt-1">$129.99</p>
+                </div>
+                <div class="group cursor-pointer">
+                    <div class="aspect-square bg-[#121214] rounded-xl overflow-hidden mb-3 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1605773527852-c546a8584ea3?w=400&q=60"
+                             loading="lazy"
+                             class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500">
+                    </div>
+                    <h3 class="text-white text-sm font-semibold truncate">GMK Laser</h3>
+                    <p class="text-gray-500 text-xs mt-1">$145.00</p>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
