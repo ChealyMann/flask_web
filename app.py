@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 
+import click
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -92,6 +93,25 @@ def logout():
 def inject_categories():
     categories = Category.query.all()
     return dict(categories=categories)
+
+# Define the command
+@app.cli.command("create-admin")
+@click.argument("name")
+@click.argument("password")
+def create_user(name, password):
+    """Creates a new user. Usage: flask create-admin <name> <password>"""
+    hashed_pw = generate_password_hash(password)
+
+    # Check your User model to see if you need 'email' or 'phone' too!
+    user = User(username=name, password=hashed_pw)
+
+    db.session.add(user)
+    db.session.commit()
+    print(f"Successfully created user: {name}")
+
+
+if __name__ == '__main__':
+    app.run()
 
 if __name__ == '__main__':
     app.run()
