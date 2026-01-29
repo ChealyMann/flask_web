@@ -17,6 +17,3 @@ Thumbs.db
 instance/
 *.db
 
-# Ignore secrets (if config.py has sensitive info)
-config.py
-
